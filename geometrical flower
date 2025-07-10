@@ -1,0 +1,60 @@
+/html>!DOCTYPE html>
+<html>
+    <head>
+        <title>Not Stairs</title>
+    </head>
+    <body>
+        <div id=main></div>
+        <script>
+        var i = 0;
+        window.onload=setTimeout(function(){
+        for(a=0;a<=100;a += 2){
+            document.getElementById("main").innerHTML += "<div class=square style='width:"+a+"vmin;height:"+a+"vmin;z-index:"+(100-a)+";top:calc(50vh - "+(a/2)+"vmin);left:calc(50vw - "+a/2+"vmin);animation-delay:"+i+"s;'></div>";
+            i += 0.375;
+        }}, 200);
+        </script>
+    </body>
+</html>
+
+css:
+
+body {
+    
+}body {
+    margin:0;
+}
+div#main{
+    width:100vw;
+    height:100vh;
+    position:relative;
+    background-color:brown;
+    overflow:hidden;
+}
+div.square{
+    box-shadow:0 0 2px black,
+               0 0 4px black,
+               0 0 6px black,
+               0 0 8px black,
+               0 0 10px black;
+    position:absolute;
+    animation:spin 5s linear infinite;
+}
+div.square:nth-child(even){
+    background-color:FF69B4
+}
+div.square:nth-child(odd){
+    background-color:aqua;
+}
+@keyframes spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+js:
+
+onload = () => {
+  const c = setTimeout(() => {
+    document.body.classList.remove("not-loaded");
+    clearTimeout(c);
+  }, 1000);
+};
