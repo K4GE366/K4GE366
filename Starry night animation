@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Page Title</title>
+    </head>
+    <body>
+        
+    </body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ayumi's Dreamy Night</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #000;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<script>
+let stars = [], boats = [], birds = [], trees = [];
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  for (let i = 0; i < 100; i++) stars.push(new Star());
+  for (let i = 0; i < 3; i++) boats.push(new Boat(random(width), random(height * 0.65, height * 0.8)));
+  for (let i = 0; i < 5; i++) birds.push(new Bird(random(width), random(50, 150)));
+  for (let i = 0; i < 7; i++) trees.push(new Tree(i * (width / 7) + random(-20, 20)));
+}
+
+function draw() {
+  background(10, 10, 30);
+  drawGradientSky();
+  drawSwirlingSky();
+  drawStars();
+  drawBirds();
+  drawWindLines();
+  drawCityscape();
+  drawGlowingLand();
+  drawTrees();
+  drawOcean();
+  drawReflections();
+  drawBoats();
+}
+
+function drawGradientSky() {
+  for (let y = 0; y < height / 2; y++) {
+    let inter = map(y, 0, height / 2, 0, 1);
+    let c = lerpColor(color(30, 10, 70), color(5, 5, 30), inter);
+    stroke(c);
+    line(0, y, width, y);
+  }
+}
+
+function drawSwirlingSky() {
+  noFill();
+  strokeWeight(1.5);
+  for (let i = 0; i < 8; i++) {
+    let offset = frameCount * 0.002 + i;
+    stroke(100 + i * 15, 100, 255 - i * 20, 70);
+    beginShape();
+    for (let a = 0; a < TWO_PI; a += 0.1) {
+      let r = 50 + i * 8 + sin(a * 3 + offset) * 10;
+      let x = width / 2 + cos(a) * r;
+      let y = height / 3 + sin(a) * r * 0.5;
+      curveVertex(x, y);
+    }
+    endShape(CLOSE);
+  }
+}
+
+function drawStars() {
+  for (let s of stars) {
+    s.update();
+    s.show();
+  }
+}
+
+class Star {
+  constructor() {
+    this.x = random(width);
+    this.y = random(height / 2);
+    this.size = random(8, 16);
+    this.pulse = random(100);
+    this.color = color(255, 240, 120);
+  }
+  update() {
+    this.pulse += 0.04;
+  }
+  show() {
+    let glow = 180 + 75 * sin(this.pulse);
+    noStroke();
+    fill(this.color.levels[0], this.color.levels[1], 50, glow);
+    ellipse(this.x, this.y, this.size + sin(this.pulse) * 2);
+  }
+}
+
+function drawWindLines() {
+  stroke(220, 220, 255, 40);
+  strokeWeight(1.2);
+  noFill();
+  for (let i = 0; i < 5; i++) {
+    let offset = frameCount * 0.01 + i * 10;
+    beginShape();
+    for (let x = 0; x < width; x += 15) {
+      let y = height / 3 + sin(x * 0.015 + offset) * 8;
+      curveVertex(x, y + i * 12);
+    }
+    endShape();
+  }
+}
+
+class Bird {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.speed = random(0.6, 1.4);
+  }
+  update() {
+    this.x += this.speed;
+    if (this.x > width + 20) this.x = -20;
+  }
+  show() {
+    this.update();
+    stroke(255);
+    strokeWeight(1);
+    noFill();
+    beginShape();
+    vertex(this.x, this.y);
+    vertex(this.x + 5, this.y - 3);
+    vertex(this.x + 10, this.y);
+    endShape();
+  }
+}
+
+function drawBirds() {
+  for (let b of birds) b.show();
+}
+
+function drawCityscape() {
+  let count = 20;
+  for (let i = 0; i < count; i++) {
+    let w = width / count;
+    let h = random(30, 80);
+    let x = i * w;
+    fill(40, 40, 60);
+    rect(x, height / 2 - 1, w - 2, -h);
+
+    for (let j = 0; j < int(h / 15); j++) {
+      if (random() < 0.4) {
+        fill(255, 230, 100, 200);
+        rect(x + w / 4, height / 2 - j * 15 - 10, 5, 8);
+      }
+    }
+  }
+}
+
+function drawGlowingLand() {
+  for (let y = height / 2 - 25; y < height / 2; y++) {
+    let inter = map(y, height / 2 - 25, height / 2, 0, 1);
+    let c = lerpColor(color(50, 50, 20), color(200, 150, 60), inter);
+    fill(c);
+    noStroke();
+    rect(0, y, width, 1);
+  }
+}
+
+class Tree {
+  constructor(x) {
+    this.x = x;
+    this.baseY = height / 2 + 20;
+    this.height = random(40, 70);
+    this.offset = random(100);
+  }
+  show() {
+    let sway = sin(frameCount * 0.05 + this.offset) * 4;
+    stroke(60, 30, 10);
+    strokeWeight(4);
+    line(this.x, this.baseY, this.x + sway, this.baseY - this.height);
+    fill(30, 180, 90, 170);
+    noStroke();
+    ellipse(this.x + sway, this.baseY - this.height, 25, 25);
+  }
+}
+
+function drawTrees() {
+  for (let t of trees) t.show();
+}
+
+function drawOcean() {
+  noStroke();
+  for (let y = height / 2; y < height; y++) {
+    let inter = map(y, height / 2, height, 0, 1);
+    let base = lerpColor(color(10, 20, 60), color(0, 5, 20), inter);
+    fill(lerpColor(base, color(255, 220, 100), 0.05 * sin(frameCount * 0.01 + y * 0.01)));
+    rect(0, y, width, 1);
+  }
+
+  fill(255, 255, 200, 40);
+  ellipse(mouseX, height - 40 + sin(frameCount * 0.05) * 10, 160, 25);
+}
+
+function drawReflections() {
+  for (let s of stars) {
+    let ry = height - (s.y * 0.6);
+    fill(255, 240, 100, 20);
+    ellipse(s.x, ry, s.size * 2, 3);
+  }
+}
+
+class Boat {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.speed = random(0.3, 0.6);
+  }
+  update() {
+    this.x += this.speed;
+    if (this.x > width + 50) this.x = -50;
+  }
+  show() {
+    this.update();
+    fill(180, 180, 255, 200);
+    ellipse(this.x, this.y, 40, 10);
+    fill(255, 255, 255, 180);
+    triangle(this.x, this.y - 18, this.x + 10, this.y, this.x - 10, this.y);
+  }
+}
+
+function drawBoats() {
+  for (let b of boats) b.show();
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+</script>
+</body>
+</html>
+
