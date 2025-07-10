@@ -12,3 +12,4 @@
 
 I did projects like 12 dimension of a box (Theoretical Physics, simple calculator, simple animations with code, love/Bd letters, 3d Blackhole, hacker kind of vibes like matrix
 in html/web language like it was a terminal. and still learning)
+ I have a account in Mimo and Sololearn same username. and github to publish my stuffs
