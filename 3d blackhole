@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Page Title</title>
+    </head>
+    <body>
+        
+    </body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>3D Wormhole Black Hole</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script>
+  // Scene setup
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(
+    75, window.innerWidth / window.innerHeight, 0.1, 1000
+  );
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  // Create wormhole tunnel
+  const tunnelGeometry = new THREE.TorusGeometry(5, 2, 32, 100);
+  const tunnelMaterial = new THREE.MeshBasicMaterial({
+    color: 0x8888ff,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.3
+  });
+  const tunnel = new THREE.Mesh(tunnelGeometry, tunnelMaterial);
+  scene.add(tunnel);
+
+  // Create swirling particle stars
+  const starCount = 1000;
+  const starGeometry = new THREE.BufferGeometry();
+  const starPositions = [];
+
+  for (let i = 0; i < starCount; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const radius = Math.random() * 20 + 5;
+    const y = (Math.random() - 0.5) * 20;
+    const x = Math.cos(angle) * radius;
+    const z = Math.sin(angle) * radius;
+    starPositions.push(x, y, z);
+  }
+
+  starGeometry.setAttribute(
+    'position',
+    new THREE.Float32BufferAttribute(starPositions, 3)
+  );
+
+  const starMaterial = new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 0.05,
+    transparent: true
+  });
+
+  const stars = new THREE.Points(starGeometry, starMaterial);
+  scene.add(stars);
+
+  // Black hole core
+  const coreGeometry = new THREE.SphereGeometry(1, 32, 32);
+  const coreMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+  const core = new THREE.Mesh(coreGeometry, coreMaterial);
+  scene.add(core);
+
+  // Glow (Event Horizon)
+  const glowMaterial = new THREE.MeshBasicMaterial({
+    color: 0x5522ff,
+    transparent: true,
+    opacity: 0.2,
+    wireframe: true
+  });
+  const glow = new THREE.Mesh(new THREE.SphereGeometry(2.5, 32, 32), glowMaterial);
+  scene.add(glow);
+
+  camera.position.z = 20;
+
+  // Animate
+  function animate() {
+    requestAnimationFrame(animate);
+
+    // Rotate the tunnel
+    tunnel.rotation.x += 0.001;
+    tunnel.rotation.y += 0.002;
+
+    // Swirl the stars
+    stars.rotation.y += 0.001;
+    stars.rotation.x += 0.0005;
+
+    // Slow pull-in camera for wormhole effect
+    camera.position.z -= 0.01;
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+  // Handle resizing
+  window.addEventListener('resize', () => {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+  });
+</script>
+</body>
+</html>
