@@ -1,4 +1,4 @@
-  <h1>👋 Hi! I'm JM</h1>
+  <h1>👋 Hi! I'm Michael</h1>
   <p>
     I'm a Grade 11 STEM student passionate about Computer Science and creativity. I love building things—from fun games and websites to meaningful digital projects that show my growth and ideas.
   </p>
