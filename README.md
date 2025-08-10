@@ -8,9 +8,11 @@
   <p>
     Every click, bug, and breakthrough is part of my journey. Thanks for stopping by—check out my projects below!
   </p>
-</section>
 
-I did projects like 12 dimension of a box (Theoretical Physics, simple calculator, simple animations with code, love/Bd letters, 3d Blackhole, hacker kind of vibes like matrix
+
+<h4>I did projects like 12 dimension of a box (Theoretical Physics, simple calculator, simple animations with code, love/Bd letters, 3d Blackhole, hacker kind of vibes like matrix
 in html/web language like it was a terminal. and still learning)
- I have a account in Mimo and Sololearn same username. and github to publish my stuffs
-you can visit those accounts and run my codes, you can't run it here right? too much hassle.
+ I have a account in Mimo and Sololearn same username. and github but now I no longer publish my codes, because I sell it, and don't wanna to anyone to copy paste the code on their notes or server/digital box
+you can visit those accounts and run my codes, you can't run it here right? too much hassle. </h4>
+
+<h3>after a month i take interest in cybersecurity.</h3>
